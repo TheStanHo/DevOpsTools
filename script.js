@@ -7,6 +7,40 @@ const characterSets = {
   symbols: "!@#$%^&*()-_=+[]{};:,.<>/?",
 };
 
+const cronAliases = {
+  month: {
+    jan: 1,
+    feb: 2,
+    mar: 3,
+    apr: 4,
+    may: 5,
+    jun: 6,
+    jul: 7,
+    aug: 8,
+    sep: 9,
+    oct: 10,
+    nov: 11,
+    dec: 12,
+  },
+  weekday: {
+    sun: 0,
+    mon: 1,
+    tue: 2,
+    wed: 3,
+    thu: 4,
+    fri: 5,
+    sat: 6,
+  },
+};
+
+const cronFieldConfigs = [
+  { label: "Minute", max: 59, min: 0 },
+  { label: "Hour", max: 23, min: 0 },
+  { label: "Day of month", max: 31, min: 1 },
+  { aliases: cronAliases.month, label: "Month", max: 12, min: 1 },
+  { aliases: cronAliases.weekday, allowSevenAsSunday: true, label: "Day of week", max: 7, min: 0 },
+];
+
 const getElement = (id) => document.getElementById(id);
 
 const writeOutput = (id, value, isError = false) => {
@@ -164,6 +198,148 @@ const decodeUrl = () => {
   }
 };
 
+const parseCronValue = (rawValue, config) => {
+  const normalizedValue = rawValue.toLowerCase();
+  const aliasValue = config.aliases?.[normalizedValue];
+  const parsedValue = aliasValue ?? Number.parseInt(normalizedValue, 10);
+
+  if (!Number.isInteger(parsedValue) || parsedValue < config.min || parsedValue > config.max) {
+    throw new Error(`${config.label} value "${rawValue}" is outside ${config.min}-${config.max}.`);
+  }
+
+  if (config.allowSevenAsSunday && parsedValue === 7) {
+    return 0;
+  }
+
+  return parsedValue;
+};
+
+const parseCronField = (field, config) => {
+  const values = new Set();
+  const parts = field.toLowerCase().split(",");
+  const isWildcard = field === "*";
+
+  for (const part of parts) {
+    if (!part) {
+      throw new Error(`${config.label} has an empty list item.`);
+    }
+
+    const [rangePart, stepPart] = part.split("/");
+    const step = stepPart === undefined ? 1 : Number.parseInt(stepPart, 10);
+
+    if (!Number.isInteger(step) || step < 1) {
+      throw new Error(`${config.label} step must be a positive number.`);
+    }
+
+    let start = config.min;
+    let end = config.max;
+
+    if (rangePart !== "*") {
+      if (rangePart.includes("-")) {
+        const [rawStart, rawEnd] = rangePart.split("-");
+        start = parseCronValue(rawStart, config);
+        end = parseCronValue(rawEnd, config);
+      } else {
+        start = parseCronValue(rangePart, config);
+        end = stepPart === undefined ? start : config.max;
+      }
+    }
+
+    if (start > end) {
+      throw new Error(`${config.label} range "${rangePart}" must start before it ends.`);
+    }
+
+    for (let value = start; value <= end; value += step) {
+      values.add(config.allowSevenAsSunday && value === 7 ? 0 : value);
+    }
+  }
+
+  return { isWildcard, values };
+};
+
+const formatCronValues = (parsedField, config) => {
+  if (parsedField.isWildcard) {
+    return "any";
+  }
+
+  return [...parsedField.values].sort((first, second) => first - second).join(", ");
+};
+
+const parseCronExpression = (expression) => {
+  const fields = expression.trim().split(/\s+/);
+
+  if (fields.length !== 5) {
+    throw new Error("Use exactly 5 fields: minute hour day-of-month month day-of-week.");
+  }
+
+  return fields.map((field, index) => parseCronField(field, cronFieldConfigs[index]));
+};
+
+const dateMatchesCron = (date, parsedFields) => {
+  const [minutes, hours, daysOfMonth, months, daysOfWeek] = parsedFields;
+  const dayOfMonthMatches = daysOfMonth.values.has(date.getUTCDate());
+  const dayOfWeekMatches = daysOfWeek.values.has(date.getUTCDay());
+  const dayMatches =
+    daysOfMonth.isWildcard || daysOfWeek.isWildcard
+      ? dayOfMonthMatches && dayOfWeekMatches
+      : dayOfMonthMatches || dayOfWeekMatches;
+
+  return (
+    minutes.values.has(date.getUTCMinutes()) &&
+    hours.values.has(date.getUTCHours()) &&
+    months.values.has(date.getUTCMonth() + 1) &&
+    dayMatches
+  );
+};
+
+const getNextCronRuns = (parsedFields, limit = 5) => {
+  const runs = [];
+  const cursor = new Date();
+  cursor.setUTCSeconds(0, 0);
+  cursor.setUTCMinutes(cursor.getUTCMinutes() + 1);
+
+  const endTime = cursor.getTime() + 366 * 24 * 60 * 60 * 1000;
+
+  while (runs.length < limit && cursor.getTime() <= endTime) {
+    if (dateMatchesCron(cursor, parsedFields)) {
+      runs.push(new Date(cursor));
+    }
+
+    cursor.setUTCMinutes(cursor.getUTCMinutes() + 1);
+  }
+
+  if (runs.length === 0) {
+    throw new Error("No matching run time found in the next year.");
+  }
+
+  return runs;
+};
+
+const explainCron = () => {
+  try {
+    const expression = getElement("cron-input").value;
+    const parsedFields = parseCronExpression(expression);
+    const fieldSummary = parsedFields
+      .map((field, index) => `${cronFieldConfigs[index].label}: ${formatCronValues(field, cronFieldConfigs[index])}`)
+      .join("\n");
+    const nextRuns = getNextCronRuns(parsedFields)
+      .map((date) => date.toISOString().replace(".000Z", "Z"))
+      .join("\n");
+
+    writeOutput(
+      "cron-output",
+      [`Expression: ${expression.trim()}`, fieldSummary, "Next 5 runs (UTC):", nextRuns].join("\n\n")
+    );
+  } catch (error) {
+    writeOutput("cron-output", error.message, true);
+  }
+};
+
+const applyCronPreset = (expression) => {
+  getElement("cron-input").value = expression;
+  explainCron();
+};
+
 const copyOutput = async (targetId, button) => {
   const text = getOutputText(targetId);
 
@@ -188,8 +364,13 @@ getElement("json-format").addEventListener("click", () => formatJson(2));
 getElement("json-minify").addEventListener("click", () => formatJson(0));
 getElement("timestamp-convert").addEventListener("click", convertTimestamp);
 getElement("timestamp-now").addEventListener("click", useCurrentTimestamp);
+getElement("cron-explain").addEventListener("click", explainCron);
 getElement("url-encode").addEventListener("click", encodeUrl);
 getElement("url-decode").addEventListener("click", decodeUrl);
+
+document.querySelectorAll("[data-cron-preset]").forEach((button) => {
+  button.addEventListener("click", () => applyCronPreset(button.dataset.cronPreset));
+});
 
 document.querySelectorAll("[data-copy-target]").forEach((button) => {
   button.addEventListener("click", () => copyOutput(button.dataset.copyTarget, button));
@@ -198,3 +379,4 @@ document.querySelectorAll("[data-copy-target]").forEach((button) => {
 generatePassword();
 generateUuid();
 useCurrentTimestamp();
+explainCron();

@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta
       name="description"
-      content="Browser-based DevOps tools for password generation, Base64 conversion, UUIDs, hashes, timestamps, JSON formatting, and URL encoding."
+      content="Browser-based DevOps tools for password generation, Cron schedules, Base64 conversion, UUIDs, hashes, timestamps, JSON formatting, and URL encoding."
     >
     <title>DevOps Tools</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
@@ -20,6 +21,7 @@
         <div class="nav-links">
           <a href="#password-generator">Password</a>
           <a href="#base64">Base64</a>
+          <a href="#cron">Cron</a>
           <a href="#hash">Hash</a>
           <a href="#json">JSON</a>
         </div>
@@ -29,7 +31,8 @@
         <h1>Fast, local utilities for everyday operations work.</h1>
         <p class="hero-copy">
           Generate secrets, transform encoded values, create UUIDs, format JSON,
-          convert timestamps, and more. Everything runs in your browser.
+          explain Cron schedules, convert timestamps, and more. Everything runs
+          in your browser.
         </p>
       </section>
     </header>
@@ -159,6 +162,34 @@
           <button class="primary-button" id="timestamp-now" type="button">Use current time</button>
         </div>
         <output class="output monospace" id="timestamp-output" aria-live="polite"></output>
+      </section>
+
+      <section class="tool-card" id="cron" aria-labelledby="cron-title">
+        <div class="tool-heading">
+          <div>
+            <p class="tool-kicker">Scheduling</p>
+            <h2 id="cron-title">Cron schedule helper</h2>
+          </div>
+          <button class="secondary-button" type="button" data-copy-target="cron-output">Copy</button>
+        </div>
+
+        <p class="helper-text">
+          Validate a 5-field Cron expression and preview the next UTC run times.
+          Supports lists, ranges, steps, and month or weekday names.
+        </p>
+
+        <label>
+          Cron expression
+          <input id="cron-input" type="text" value="*/15 9-17 * * MON-FRI" spellcheck="false">
+        </label>
+        <div class="preset-grid" aria-label="Cron schedule presets">
+          <button class="secondary-button" type="button" data-cron-preset="*/5 * * * *">Every 5 minutes</button>
+          <button class="secondary-button" type="button" data-cron-preset="0 0 * * *">Daily at midnight</button>
+          <button class="secondary-button" type="button" data-cron-preset="0 9 * * MON-FRI">Weekday 09:00</button>
+          <button class="secondary-button" type="button" data-cron-preset="0 0 1 * *">Monthly</button>
+        </div>
+        <button class="primary-button" id="cron-explain" type="button">Explain schedule</button>
+        <output class="output monospace" id="cron-output" aria-live="polite"></output>
       </section>
 
       <section class="tool-card" id="url" aria-labelledby="url-title">
