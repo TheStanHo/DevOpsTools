@@ -136,6 +136,39 @@ h2 {
   max-width: 720px;
 }
 
+.tool-index {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 2rem auto 0;
+  max-width: 920px;
+  text-align: left;
+}
+
+.tool-index-card {
+  background: rgb(255 255 255 / 0.06);
+  border: 1px solid var(--card-border);
+  border-radius: 1rem;
+  color: var(--text);
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.9rem;
+}
+
+.tool-index-card span {
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.tool-index-card:hover,
+.tool-index-card:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgb(57 217 138 / 0.12);
+}
+
 .container {
   display: grid;
   gap: 1.25rem;
@@ -302,6 +335,10 @@ textarea:focus {
     text-align: left;
   }
 
+  .tool-index {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .container,
   .form-grid,
   .preset-grid {
@@ -312,5 +349,11 @@ textarea:focus {
   .tool-card:nth-child(5),
   .tool-card:nth-child(6) {
     grid-row: span 1;
+  }
+}
+
+@media (max-width: 520px) {
+  .tool-index {
+    grid-template-columns: 1fr;
   }
 }
