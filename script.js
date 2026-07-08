@@ -239,6 +239,10 @@ const parseCronField = (field, config) => {
         const [rawStart, rawEnd] = rangePart.split("-");
         start = parseCronValue(rawStart, config);
         end = parseCronValue(rawEnd, config);
+
+        if (config.allowSevenAsSunday && rawEnd.toLowerCase() === "sun" && start > 0) {
+          end = 7;
+        }
       } else {
         start = parseCronValue(rangePart, config);
         end = stepPart === undefined ? start : config.max;
