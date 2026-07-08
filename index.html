@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="Browser-based DevOps tools for password generation, Base64 conversion, UUIDs, hashes, timestamps, JSON formatting, and URL encoding."
+    >
+    <title>DevOps Tools</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="brand" href="#top" aria-label="DevOps Tools home">
+          <span class="brand-mark" aria-hidden="true">&gt;_</span>
+          <span>DevOps Tools</span>
+        </a>
+        <div class="nav-links">
+          <a href="#password-generator">Password</a>
+          <a href="#base64">Base64</a>
+          <a href="#hash">Hash</a>
+          <a href="#json">JSON</a>
+        </div>
+      </nav>
+      <section class="hero" id="top">
+        <p class="eyebrow">Useful browser tools for DevOps engineers</p>
+        <h1>Fast, local utilities for everyday operations work.</h1>
+        <p class="hero-copy">
+          Generate secrets, transform encoded values, create UUIDs, format JSON,
+          convert timestamps, and more. Everything runs in your browser.
+        </p>
+      </section>
+    </header>
+
+    <main class="container">
+      <section class="tool-card" id="password-generator" aria-labelledby="password-title">
+        <div class="tool-heading">
+          <div>
+            <p class="tool-kicker">Secrets</p>
+            <h2 id="password-title">Password generator</h2>
+          </div>
+          <button class="secondary-button" type="button" data-copy-target="password-output">Copy</button>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            Length
+            <input id="password-length" type="number" min="8" max="128" value="24">
+          </label>
+          <label class="checkbox-label">
+            <input id="include-uppercase" type="checkbox" checked>
+            Uppercase
+          </label>
+          <label class="checkbox-label">
+            <input id="include-lowercase" type="checkbox" checked>
+            Lowercase
+          </label>
+          <label class="checkbox-label">
+            <input id="include-numbers" type="checkbox" checked>
+            Numbers
+          </label>
+          <label class="checkbox-label">
+            <input id="include-symbols" type="checkbox" checked>
+            Symbols
+          </label>
+        </div>
+
+        <button class="primary-button" id="generate-password" type="button">Generate password</button>
+        <output class="output monospace" id="password-output" aria-live="polite"></output>
+      </section>
+
+      <section class="tool-card" id="base64" aria-labelledby="base64-title">
+        <div class="tool-heading">
+          <div>
+            <p class="tool-kicker">Encoding</p>
+            <h2 id="base64-title">Base64 encode / decode</h2>
+          </div>
+          <button class="secondary-button" type="button" data-copy-target="base64-output">Copy</button>
+        </div>
+
+        <label>
+          Input
+          <textarea id="base64-input" rows="5" placeholder="Paste text or Base64 here"></textarea>
+        </label>
+        <div class="button-row">
+          <button class="primary-button" id="base64-encode" type="button">Encode</button>
+          <button class="primary-button" id="base64-decode" type="button">Decode</button>
+        </div>
+        <output class="output monospace" id="base64-output" aria-live="polite"></output>
+      </section>
+
+      <section class="tool-card" id="hash" aria-labelledby="hash-title">
+        <div class="tool-heading">
+          <div>
+            <p class="tool-kicker">Integrity</p>
+            <h2 id="hash-title">SHA-256 hash</h2>
+          </div>
+          <button class="secondary-button" type="button" data-copy-target="hash-output">Copy</button>
+        </div>
+
+        <label>
+          Text to hash
+          <textarea id="hash-input" rows="4" placeholder="Enter a value to hash"></textarea>
+        </label>
+        <button class="primary-button" id="hash-generate" type="button">Generate SHA-256</button>
+        <output class="output monospace" id="hash-output" aria-live="polite"></output>
+      </section>
+
+      <section class="tool-card" id="uuid" aria-labelledby="uuid-title">
+        <div class="tool-heading">
+          <div>
+            <p class="tool-kicker">Identifiers</p>
+            <h2 id="uuid-title">UUID generator</h2>
+          </div>
+          <button class="secondary-button" type="button" data-copy-target="uuid-output">Copy</button>
+        </div>
+
+        <button class="primary-button" id="uuid-generate" type="button">Generate UUID</button>
+        <output class="output monospace" id="uuid-output" aria-live="polite"></output>
+      </section>
+
+      <section class="tool-card" id="json" aria-labelledby="json-title">
+        <div class="tool-heading">
+          <div>
+            <p class="tool-kicker">Formatting</p>
+            <h2 id="json-title">JSON formatter / minifier</h2>
+          </div>
+          <button class="secondary-button" type="button" data-copy-target="json-output">Copy</button>
+        </div>
+
+        <label>
+          JSON input
+          <textarea id="json-input" rows="7" placeholder='{"service":"api","replicas":3}'></textarea>
+        </label>
+        <div class="button-row">
+          <button class="primary-button" id="json-format" type="button">Format</button>
+          <button class="primary-button" id="json-minify" type="button">Minify</button>
+        </div>
+        <output class="output monospace" id="json-output" aria-live="polite"></output>
+      </section>
+
+      <section class="tool-card" id="timestamp" aria-labelledby="timestamp-title">
+        <div class="tool-heading">
+          <div>
+            <p class="tool-kicker">Time</p>
+            <h2 id="timestamp-title">Unix timestamp converter</h2>
+          </div>
+          <button class="secondary-button" type="button" data-copy-target="timestamp-output">Copy</button>
+        </div>
+
+        <label>
+          Unix timestamp or ISO date
+          <input id="timestamp-input" type="text" placeholder="1720468800 or 2026-07-08T21:05:00Z">
+        </label>
+        <div class="button-row">
+          <button class="primary-button" id="timestamp-convert" type="button">Convert</button>
+          <button class="primary-button" id="timestamp-now" type="button">Use current time</button>
+        </div>
+        <output class="output monospace" id="timestamp-output" aria-live="polite"></output>
+      </section>
+
+      <section class="tool-card" id="url" aria-labelledby="url-title">
+        <div class="tool-heading">
+          <div>
+            <p class="tool-kicker">Web</p>
+            <h2 id="url-title">URL encode / decode</h2>
+          </div>
+          <button class="secondary-button" type="button" data-copy-target="url-output">Copy</button>
+        </div>
+
+        <label>
+          Input
+          <textarea id="url-input" rows="4" placeholder="Paste a URL or query string value"></textarea>
+        </label>
+        <div class="button-row">
+          <button class="primary-button" id="url-encode" type="button">Encode</button>
+          <button class="primary-button" id="url-decode" type="button">Decode</button>
+        </div>
+        <output class="output monospace" id="url-output" aria-live="polite"></output>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>Built for DevOps workflows. Values are processed locally in the browser.</p>
+    </footer>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>
