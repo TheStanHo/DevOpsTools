@@ -20,11 +20,11 @@
         </a>
         <div class="nav-links">
           <a href="#available-tools">All tools</a>
-          <a href="#password-generator">Password</a>
-          <a href="#base64">Base64</a>
+          <a href="#jwt">JWT</a>
+          <a href="#yaml">YAML</a>
           <a href="#cron">Cron</a>
-          <a href="#hash">Hash</a>
-          <a href="#json">JSON</a>
+          <a href="#cidr">CIDR</a>
+          <a href="#regex">Regex</a>
         </div>
       </nav>
       <section class="hero" id="top">
@@ -33,8 +33,8 @@
           <h1>Fast, local utilities for everyday operations work.</h1>
           <p class="hero-copy">
             Generate secrets, transform encoded values, create UUIDs, format JSON,
-            explain Cron schedules, convert timestamps, and more. Everything runs
-            in your browser.
+          explain Cron schedules, inspect JWTs, calculate CIDR ranges, and more.
+          Everything runs in your browser.
           </p>
         </div>
         <div class="tool-index" id="available-tools" aria-label="Available tools">
@@ -70,18 +70,73 @@
             <span>Web</span>
             URL encode / decode
           </a>
+          <a class="tool-index-card" href="#yaml">
+            <span>Config</span>
+            YAML lint / cleanup
+          </a>
+          <a class="tool-index-card" href="#jwt">
+            <span>Security</span>
+            JWT decoder
+          </a>
+          <a class="tool-index-card" href="#cidr">
+            <span>Network</span>
+            CIDR calculator
+          </a>
+          <a class="tool-index-card" href="#regex">
+            <span>Logs</span>
+            Regex tester
+          </a>
+          <a class="tool-index-card" href="#diff">
+            <span>Config</span>
+            Text diff
+          </a>
+          <a class="tool-index-card" href="#http">
+            <span>Web</span>
+            HTTP helper
+          </a>
         </div>
       </section>
     </header>
 
-    <main class="container">
+    <main class="workspace">
+      <aside class="sidebar" aria-label="Tool categories">
+        <p class="sidebar-title">Tool groups</p>
+        <div class="sidebar-group">
+          <p>Security</p>
+          <a href="#password-generator">Password generator</a>
+          <a href="#uuid">UUID generator</a>
+          <a href="#jwt">JWT decoder</a>
+          <a href="#hash">SHA-256 hash</a>
+        </div>
+        <div class="sidebar-group">
+          <p>Data & config</p>
+          <a href="#base64">Base64</a>
+          <a href="#url">URL encode / decode</a>
+          <a href="#json">JSON formatter</a>
+          <a href="#yaml">YAML lint / cleanup</a>
+          <a href="#diff">Text diff</a>
+        </div>
+        <div class="sidebar-group">
+          <p>Time & scheduling</p>
+          <a href="#timestamp">Timestamp converter</a>
+          <a href="#cron">Cron helper</a>
+        </div>
+        <div class="sidebar-group">
+          <p>Network & debugging</p>
+          <a href="#cidr">CIDR calculator</a>
+          <a href="#regex">Regex tester</a>
+          <a href="#http">HTTP helper</a>
+        </div>
+      </aside>
+
+      <div class="container">
       <section class="tool-card" id="password-generator" aria-labelledby="password-title">
         <div class="tool-heading">
           <div>
             <p class="tool-kicker">Secrets</p>
             <h2 id="password-title">Password generator</h2>
           </div>
-          <button class="secondary-button" type="button" data-copy-target="password-output">Copy</button>
+          <button class="secondary-button" type="button" data-copy-target="password-output" aria-label="Copy password output">Copy</button>
         </div>
 
         <div class="form-grid">
@@ -117,7 +172,7 @@
             <p class="tool-kicker">Encoding</p>
             <h2 id="base64-title">Base64 encode / decode</h2>
           </div>
-          <button class="secondary-button" type="button" data-copy-target="base64-output">Copy</button>
+          <button class="secondary-button" type="button" data-copy-target="base64-output" aria-label="Copy Base64 output">Copy</button>
         </div>
 
         <label>
@@ -137,7 +192,7 @@
             <p class="tool-kicker">Integrity</p>
             <h2 id="hash-title">SHA-256 hash</h2>
           </div>
-          <button class="secondary-button" type="button" data-copy-target="hash-output">Copy</button>
+          <button class="secondary-button" type="button" data-copy-target="hash-output" aria-label="Copy hash output">Copy</button>
         </div>
 
         <label>
@@ -154,7 +209,7 @@
             <p class="tool-kicker">Identifiers</p>
             <h2 id="uuid-title">UUID generator</h2>
           </div>
-          <button class="secondary-button" type="button" data-copy-target="uuid-output">Copy</button>
+          <button class="secondary-button" type="button" data-copy-target="uuid-output" aria-label="Copy UUID output">Copy</button>
         </div>
 
         <button class="primary-button" id="uuid-generate" type="button">Generate UUID</button>
@@ -167,7 +222,7 @@
             <p class="tool-kicker">Formatting</p>
             <h2 id="json-title">JSON formatter / minifier</h2>
           </div>
-          <button class="secondary-button" type="button" data-copy-target="json-output">Copy</button>
+          <button class="secondary-button" type="button" data-copy-target="json-output" aria-label="Copy JSON output">Copy</button>
         </div>
 
         <label>
@@ -187,7 +242,7 @@
             <p class="tool-kicker">Time</p>
             <h2 id="timestamp-title">Unix timestamp converter</h2>
           </div>
-          <button class="secondary-button" type="button" data-copy-target="timestamp-output">Copy</button>
+          <button class="secondary-button" type="button" data-copy-target="timestamp-output" aria-label="Copy timestamp output">Copy</button>
         </div>
 
         <label>
@@ -207,7 +262,7 @@
             <p class="tool-kicker">Scheduling</p>
             <h2 id="cron-title">Cron schedule helper</h2>
           </div>
-          <button class="secondary-button" type="button" data-copy-target="cron-output">Copy</button>
+          <button class="secondary-button" type="button" data-copy-target="cron-output" aria-label="Copy Cron output">Copy</button>
         </div>
 
         <p class="helper-text">
@@ -235,7 +290,7 @@
             <p class="tool-kicker">Web</p>
             <h2 id="url-title">URL encode / decode</h2>
           </div>
-          <button class="secondary-button" type="button" data-copy-target="url-output">Copy</button>
+          <button class="secondary-button" type="button" data-copy-target="url-output" aria-label="Copy URL output">Copy</button>
         </div>
 
         <label>
@@ -248,6 +303,137 @@
         </div>
         <output class="output monospace" id="url-output" aria-live="polite"></output>
       </section>
+
+      <section class="tool-card" id="yaml" aria-labelledby="yaml-title">
+        <div class="tool-heading">
+          <div>
+            <p class="tool-kicker">Config</p>
+            <h2 id="yaml-title">YAML lint / cleanup</h2>
+          </div>
+          <button class="secondary-button" type="button" data-copy-target="yaml-output" aria-label="Copy YAML output">Copy</button>
+        </div>
+
+        <p class="helper-text">
+          Lightweight checks for indentation, tabs, common key/value mistakes, and trailing spaces.
+        </p>
+        <label>
+          YAML input
+          <textarea id="yaml-input" rows="8" spellcheck="false" placeholder="apiVersion: v1&#10;kind: ConfigMap&#10;metadata:&#10;  name: app-config"></textarea>
+        </label>
+        <div class="button-row">
+          <button class="primary-button" id="yaml-validate" type="button">Validate YAML</button>
+          <button class="primary-button" id="yaml-clean" type="button">Clean whitespace</button>
+        </div>
+        <output class="output monospace" id="yaml-output" aria-live="polite"></output>
+      </section>
+
+      <section class="tool-card" id="jwt" aria-labelledby="jwt-title">
+        <div class="tool-heading">
+          <div>
+            <p class="tool-kicker">Security</p>
+            <h2 id="jwt-title">JWT decoder</h2>
+          </div>
+          <button class="secondary-button" type="button" data-copy-target="jwt-output" aria-label="Copy JWT output">Copy</button>
+        </div>
+
+        <label>
+          JWT
+          <textarea id="jwt-input" rows="5" spellcheck="false" placeholder="Paste header.payload.signature"></textarea>
+        </label>
+        <button class="primary-button" id="jwt-decode" type="button">Decode JWT</button>
+        <output class="output monospace" id="jwt-output" aria-live="polite"></output>
+      </section>
+
+      <section class="tool-card" id="cidr" aria-labelledby="cidr-title">
+        <div class="tool-heading">
+          <div>
+            <p class="tool-kicker">Network</p>
+            <h2 id="cidr-title">CIDR calculator</h2>
+          </div>
+          <button class="secondary-button" type="button" data-copy-target="cidr-output" aria-label="Copy CIDR output">Copy</button>
+        </div>
+
+        <label>
+          IPv4 CIDR
+          <input id="cidr-input" type="text" value="10.0.12.34/24" spellcheck="false">
+        </label>
+        <button class="primary-button" id="cidr-calculate" type="button">Calculate range</button>
+        <output class="output monospace" id="cidr-output" aria-live="polite"></output>
+      </section>
+
+      <section class="tool-card" id="regex" aria-labelledby="regex-title">
+        <div class="tool-heading">
+          <div>
+            <p class="tool-kicker">Logs</p>
+            <h2 id="regex-title">Regex tester</h2>
+          </div>
+          <button class="secondary-button" type="button" data-copy-target="regex-output" aria-label="Copy regex output">Copy</button>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            Pattern
+            <input id="regex-pattern" type="text" value="error|warn" spellcheck="false">
+          </label>
+          <label>
+            Flags
+            <input id="regex-flags" type="text" value="i" spellcheck="false" maxlength="6">
+          </label>
+        </div>
+        <label>
+          Test text
+          <textarea id="regex-input" rows="6" spellcheck="false" placeholder="Paste logs or text to test"></textarea>
+        </label>
+        <button class="primary-button" id="regex-test" type="button">Test regex</button>
+        <output class="output monospace" id="regex-output" aria-live="polite"></output>
+      </section>
+
+      <section class="tool-card" id="diff" aria-labelledby="diff-title">
+        <div class="tool-heading">
+          <div>
+            <p class="tool-kicker">Config</p>
+            <h2 id="diff-title">Text diff</h2>
+          </div>
+          <button class="secondary-button" type="button" data-copy-target="diff-output" aria-label="Copy diff output">Copy</button>
+        </div>
+
+        <div class="form-grid wide-form-grid">
+          <label>
+            Original
+            <textarea id="diff-old" rows="8" spellcheck="false" placeholder="Old config"></textarea>
+          </label>
+          <label>
+            Updated
+            <textarea id="diff-new" rows="8" spellcheck="false" placeholder="New config"></textarea>
+          </label>
+        </div>
+        <button class="primary-button" id="diff-compare" type="button">Compare text</button>
+        <output class="output monospace" id="diff-output" aria-live="polite"></output>
+      </section>
+
+      <section class="tool-card" id="http" aria-labelledby="http-title">
+        <div class="tool-heading">
+          <div>
+            <p class="tool-kicker">Web</p>
+            <h2 id="http-title">HTTP status / header helper</h2>
+          </div>
+          <button class="secondary-button" type="button" data-copy-target="http-output" aria-label="Copy HTTP output">Copy</button>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            Status code
+            <input id="http-status" type="number" min="100" max="599" value="503">
+          </label>
+          <label>
+            Header line
+            <input id="http-header" type="text" value="cache-control: no-store" spellcheck="false">
+          </label>
+        </div>
+        <button class="primary-button" id="http-explain" type="button">Explain HTTP</button>
+        <output class="output monospace" id="http-output" aria-live="polite"></output>
+      </section>
+      </div>
     </main>
 
     <footer class="footer">
