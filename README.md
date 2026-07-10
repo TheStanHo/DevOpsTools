@@ -10,15 +10,42 @@ https://devopstools.stanho.dev
 
 ## Included tools
 
+### Security
 - Secure password generator
-- Base64 encoder and decoder
-- SHA-256 hash generator
 - UUID generator
-- JSON formatter and minifier
-- Unix timestamp converter
+- JWT decoder (with expiry / `nbf` warnings)
+- Hash generator (MD5, SHA-1, SHA-256, SHA-384, SHA-512)
+- PEM / certificate decoder
+
+### Data & config
+- Base64 encoder and decoder
 - URL encoder and decoder
+- Query string ↔ JSON converter
+- JSON formatter and minifier
+- YAML lint / format (js-yaml parser)
+- Text diff with colorized output
+
+### Time & scheduling
+- Unix timestamp converter with timezone display
+- Cron schedule helper (5-field and 6-field, timezone-aware next runs)
+
+### Network & debugging
+- CIDR calculator (IPv4 and IPv6)
+- Subnet overlap checker
+- Regex tester
+- HTTP status / header helper
+- kubectl / docker command explainer
 
 All tools run locally in the browser. No values are sent to a server.
+
+## Features
+
+- Searchable tool sidebar (`/` to focus search)
+- Light and dark themes
+- Mobile tool drawer
+- Keyboard shortcuts (`?` for help)
+- Swap / clear / sample actions on common converters
+- Open Graph metadata for sharing
 
 ## Local preview
 
